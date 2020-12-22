@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/admin/account")
+@RequestMapping("/api/admin/account")
 public class AdminAccountController {
 
     @Autowired

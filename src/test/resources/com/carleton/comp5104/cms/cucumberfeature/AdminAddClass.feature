@@ -92,7 +92,7 @@ Feature: Admin add a new class
 
     Examples:
       | professor | sectionNum0 | enrolledNum0 | enrolledCapacity0 | enrollDeadline      | DnpDL               | DnfDL               | enrollDeadline1     | DnpDL1              | DnfDL1              | enrollDeadline2     | DnpDL2              | DnfDL2              | enrollDeadline3     | DnpDL3              | DnfDL3              | description |
-      | 2000000   | 1           | 300          | 120               | "2019-2-5 20:30:30" | "2021-3-5 20:30:30" | "2021-4-5 20:30:30" | "2021-2-5 20:30:30" | "2021-1-5 20:30:30" | "2021-4-5 20:30:30" | "2021-2-5 20:30:30" | "2021-3-5 20:30:30" | "2021-3-1 20:30:30" | "2021-2-5 20:30:30" | "2021-3-5 20:30:30" | "2021-4-5 20:30:30" | "test"      |
+      | 2000000   | 1           | 10           | 120               | "2019-2-5 20:30:30" | "2021-3-5 20:30:30" | "2021-4-5 20:30:30" | "2021-2-5 20:30:30" | "2021-1-5 20:30:30" | "2021-4-5 20:30:30" | "2021-2-5 20:30:30" | "2021-3-5 20:30:30" | "2021-3-1 20:30:30" | "2021-2-5 20:30:30" | "2021-3-5 20:30:30" | "2021-4-5 20:30:30" | "test"      |
 
   @AddNewSchedule
   Scenario Outline: Add new schedule to the class

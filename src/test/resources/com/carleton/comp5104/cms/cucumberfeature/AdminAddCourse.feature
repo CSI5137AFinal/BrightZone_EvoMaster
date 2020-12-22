@@ -6,7 +6,7 @@ Feature: The admin want to add a new course to the system.
     Given the admin press the add course button
     When the admin input the new <courseSubject> and <courseNumber>
     And the system check if the course number has conflicts
-    And the system output the course number is "repeated"
+    And the system output the course number is "repeat"
     And the admin input the new <courseSubject> and <courseNumber1>
     And the system check if the course number has conflicts
     And the system output the course number is "valid"
@@ -23,7 +23,7 @@ Feature: The admin want to add a new course to the system.
 
     Examples:
       | courseSubject | courseNumber | courseNumber1 | courseName        | courseName1 | credit | description             |
-      | "OPTOM"       | "101"        | "99"          | "Pathophysiology" | "test1"     | 3      | "this is a test course" |
+      | "OPTOM"       | "103"        | "99"          | "Pathophysiology" | "test1"     | 3      | "this is a test course" |
 
 
   @addCourseWithPrerequisite
@@ -31,7 +31,7 @@ Feature: The admin want to add a new course to the system.
     Given the admin press the add course button
     When the admin input the new <courseSubject> and <courseNumber>
     And the system check if the course number has conflicts
-    And the system output the course number is "repeated"
+    And the system output the course number is "repeat"
     And the admin input the new <courseSubject> and <courseNumber1>
     And the system check if the course number has conflicts
     And the system output the course number is "valid"
@@ -57,7 +57,7 @@ Feature: The admin want to add a new course to the system.
 
     Examples:
       | courseSubject | courseNumber | courseNumber1 | courseName        | courseName1 | credit | description             | prerequisiteCourseSubject | prerequisiteCourseSubject1 |
-      | "OPTOM"       | "101"        | "99"          | "Pathophysiology" | "test1"     | 3      | "this is a test course" | "ASFG"                    | "OPTOM"                    |
+      | "OPTOM"       | "103"        | "99"          | "Pathophysiology" | "test1"     | 3      | "this is a test course" | "ASFG"                    | "OPTOM"                    |
 
 
   @addCourseWithPreclusion
@@ -65,7 +65,7 @@ Feature: The admin want to add a new course to the system.
     Given the admin press the add course button
     When the admin input the new <courseSubject> and <courseNumber>
     And the system check if the course number has conflicts
-    And the system output the course number is "repeated"
+    And the system output the course number is "repeat"
     And the admin input the new <courseSubject> and <courseNumber1>
     And the system check if the course number has conflicts
     And the system output the course number is "valid"
@@ -91,5 +91,5 @@ Feature: The admin want to add a new course to the system.
 
     Examples:
       | courseSubject | courseNumber | courseNumber1 | courseName        | courseName1 | credit | description             | preclusionCourseSubject | preclusionCourseSubject1 |
-      | "OPTOM"       | "101"        | "99"          | "Pathophysiology" | "test1"     | 3      | "this is a test course" | "NXSK"                  | "OPTOM"                  |
+      | "OPTOM"       | "103"        | "99"          | "Pathophysiology" | "test1"     | 3      | "this is a test course" | "NXSK"                  | "OPTOM"                  |
 
