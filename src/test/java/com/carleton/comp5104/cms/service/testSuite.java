@@ -4,9 +4,15 @@ package com.carleton.comp5104.cms.service;
 //import org.junit.platform.suite.api.SelectPackages;
 //import org.junit.platform.suite.api.SuiteDisplayName;
 //import org.junit.runner.RunWith;
+//import org.junit.runners.Suite;
 //
 //@RunWith(JUnitPlatform.class)
 //@SuiteDisplayName("JUnit Test Suite")
 //@SelectPackages("com.carleton")
+////@RunWith(Suite.class)
+////@Suite.SuiteClasses({
+////        AdminAccountServiceTest.class,
+////        AdminCourseServiceTest.class
+////})
 //public class testSuite {
 //}

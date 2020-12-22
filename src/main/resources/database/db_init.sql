@@ -89,8 +89,8 @@ CREATE TABLE `classroom_schedule`
     `class_id`      int,
     `room_capacity` int,
     `weekday`       ENUM ('Mon', 'Tues', 'Wed', 'Thurs', 'Fri'),
-    `start_time`    time,
-    `end_time`      time
+    `start_time`    varchar(255),
+    `end_time`      varchar(255)
 );
 
 CREATE TABLE `enrollment`

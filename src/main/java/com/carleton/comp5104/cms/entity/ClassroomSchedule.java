@@ -26,6 +26,6 @@ public class ClassroomSchedule {
     private WeekDay weekday;
     //    private Time startTime;
 //    private Time endTime;
-    private Timestamp startTime;
-    private Timestamp endTime;
+    private String startTime;
+    private String endTime;
 }
