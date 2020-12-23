@@ -11,9 +11,9 @@ import java.util.Map;
 
 
 public interface AdminAccountService {
-    Page<Account> getAllAccount(Integer pageNum, Integer pageSize);
+    Page<Account> getAllAccount(Integer pageNum, Integer pageSize) ;
 
-    Page<Account> getAllAccountByType(String accountType, Integer pageNum, Integer pageSize);
+    Page<Account> getAllAccountByType(String accountType, Integer pageNum, Integer pageSize) ;
 
     Page<Account> getAllAccountByName(String name, Integer pageNum, Integer pageSize);
 

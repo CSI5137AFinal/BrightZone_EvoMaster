@@ -53,7 +53,12 @@ public class AdminAccountServiceTest {
 
     @Test
     void testGetAllAccount() {
-        Page<Account> accounts = adminAccountService.getAllAccount(0, 10);
+        Page<Account> accounts = null;
+        try {
+            accounts = adminAccountService.getAllAccount(0, 10);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         assertEquals(10, accounts.getSize());
     }
 
@@ -62,7 +67,12 @@ public class AdminAccountServiceTest {
         String accountType = "professor";
         Integer pageNum = 0;
         Integer pageSize = 10;
-        Page<Account> accounts = adminAccountService.getAllAccountByType(accountType, pageNum, pageSize);
+        Page<Account> accounts = null;
+        try {
+            accounts = adminAccountService.getAllAccountByType(accountType, pageNum, pageSize);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         assertEquals(10, accounts.getSize());
         assertEquals(AccountType.professor, accounts.getContent().get(0).getType());
     }

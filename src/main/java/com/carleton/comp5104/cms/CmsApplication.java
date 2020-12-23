@@ -28,7 +28,7 @@ public class CmsApplication {
          */
 		return new Docket(DocumentationType.OAS_30)
 				.select()
-				.paths(PathSelectors.ant("/api/**"))
+				.paths(PathSelectors.ant("/api/admin/**"))
 				.build();
 	}
 

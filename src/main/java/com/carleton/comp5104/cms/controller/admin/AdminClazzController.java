@@ -9,6 +9,8 @@ import com.carleton.comp5104.cms.service.AdminClazzService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.PublicKey;
@@ -17,125 +19,131 @@ import java.util.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/admin/class")
+@RequestMapping("/api/admin/class")
 public class AdminClazzController {
     @Autowired
     AdminClazzService adminClazzService;
 
-//    @GetMapping("/getClassByCourseId/{courseId}")
-//    public ArrayList<HashMap<String, String>> getClassByCourseId(@PathVariable int courseId) {
-//        return adminClazzService.getClassByCourseId(courseId);
-//    }
-
     @GetMapping("/getClassInfoByCourseId/{courseId}")
-    public ArrayList<Clazz> getClassInfoByCourseId(@PathVariable String courseId) {
-        System.out.println(courseId);
-        return adminClazzService.getClassInfoByCourseId(Integer.parseInt(courseId));
+    public ResponseEntity<ArrayList<Clazz>> getClassInfoByCourseId(@PathVariable String courseId) {
+        ArrayList<Clazz> classInfoByCourseId = adminClazzService.getClassInfoByCourseId(Integer.parseInt(courseId));
+        if (!classInfoByCourseId.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(classInfoByCourseId);
+        } else {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(classInfoByCourseId);
+        }
     }
 
     @GetMapping("/getClassSchedulesByClassId/{classId}")
-    public ArrayList<ClassroomSchedule> getClassSchedulesByClassId(@PathVariable String classId) {
-        System.out.println(classId);
-        return adminClazzService.getClassSchedulesByClassId(Integer.parseInt(classId));
+    public ResponseEntity<ArrayList<ClassroomSchedule>> getClassSchedulesByClassId(@PathVariable String classId) {
+        ArrayList<ClassroomSchedule> classSchedulesByClassId = adminClazzService.getClassSchedulesByClassId(Integer.parseInt(classId));
+        if (!classSchedulesByClassId.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(classSchedulesByClassId);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
     }
 
 
     @GetMapping("/getProfessorById/{userId}")
-    public Account getProfessorById(@PathVariable int userId) {
-        return adminClazzService.getProfessorById(userId);
+    public ResponseEntity<Account> getProfessorById(@PathVariable int userId) {
+        Account professorById = adminClazzService.getProfessorById(userId);
+        if (professorById != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(professorById);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @GetMapping("/getProfessorByEmail/{email}")
-    public Account getProfessorByEmail(@PathVariable String email) {
-        return adminClazzService.getProfessorByEmail(email);
+    public ResponseEntity<Account> getProfessorByEmail(@PathVariable String email) {
+        Account professorByEmail = adminClazzService.getProfessorByEmail(email);
+        if (professorByEmail != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(professorByEmail);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @PostMapping("/classroomSchedule/")
-    public ArrayList<Classroom> classroomSchedule(@RequestParam HashMap<String, String> checkMap) throws ParseException {
-        return adminClazzService.classroomSchedule(checkMap);
+    public ResponseEntity<ArrayList<Classroom>> classroomSchedule(@RequestParam HashMap<String, String> checkMap) throws ParseException {
+        ArrayList<Classroom> classrooms = adminClazzService.classroomSchedule(checkMap);
+        return ResponseEntity.status(HttpStatus.OK).body(classrooms);
     }
 
-//    @GetMapping("/getClassroomSchedule/")
-//    public ArrayList<Classroom> classroomSchedule(@RequestParam HashMap<String, String> checkMap) throws ParseException {
-//        return adminClazzService.classroomSchedule(checkMap);
-//    }
-
     @GetMapping("/getProfessorList")
-    public ArrayList<Account> getProfessorList() {
-        return adminClazzService.getProfessorList();
+    public ResponseEntity<ArrayList<Account>> getProfessorList() {
+        ArrayList<Account> professorList = adminClazzService.getProfessorList();
+        if (!professorList.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(professorList);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @GetMapping("/getClassroomSizeList")
-    public TreeSet<Integer> getClassroomSizeList() {
-        return adminClazzService.getClassroomSizeList();
-    }
-
-    @PostMapping("/addNewClass")
-    public String addNewClass(@RequestParam HashMap<String, String> classBasicInfo, @RequestParam HashMap<String, String> scheduleForm) {
-
-        System.out.println(classBasicInfo.toString());
-        System.out.println(scheduleForm.toString());
-//        if (adminClazzService.addNewClass(infoMap) == 0) {
-//            return "success";
-//        } else {
-//            return "error";
-//        }
-        return "success";
+    public ResponseEntity<TreeSet<Integer>> getClassroomSizeList() {
+        TreeSet<Integer> classroomSizeList = adminClazzService.getClassroomSizeList();
+        if (!classroomSizeList.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.OK).body(classroomSizeList);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @PostMapping("/addNewClassInfo")
-    public Clazz addNewClassInfo(@RequestBody Clazz newClazz) {
+    public ResponseEntity<Clazz> addNewClassInfo(@RequestBody Clazz newClazz) {
         System.out.println(newClazz.toString());
         Clazz clazz = adminClazzService.addNewClassInfo(newClazz);
         if (clazz != null) {
-            return clazz;
+            return ResponseEntity.status(HttpStatus.OK).body(clazz);
         } else {
-            return null;
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 
     @PostMapping("/updateClassInfo")
-    public Clazz updateClassInfo(@RequestBody Clazz newEditClazz) {
+    public ResponseEntity<Clazz> updateClassInfo(@RequestBody Clazz newEditClazz) {
         System.out.println(newEditClazz.toString());
         Clazz clazz = adminClazzService.updateClassInfo(newEditClazz);
-        System.out.println(clazz.toString());
         if (clazz != null) {
-            return clazz;
+            return ResponseEntity.status(HttpStatus.OK).body(clazz);
         } else {
-            return null;
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 
 
     @PostMapping("/addNewClassSchedules")
-    public String addNewClassSchedules(@RequestBody ArrayList<HashMap<String, String>> newClassroomSchedules) {
+    public ResponseEntity<String> addNewClassSchedules(@RequestBody ArrayList<HashMap<String, String>> newClassroomSchedules) {
         System.out.println(newClassroomSchedules.toString());
         Integer status = adminClazzService.addNewClassSchedules(newClassroomSchedules);
         if (status == 0) {
-            return "success";
+            return ResponseEntity.status(HttpStatus.OK).body("success");
         } else {
-            return "error";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
         }
     }
 
     @PostMapping("/updateClassSchedules")
-    public String updateClassSchedules(@RequestBody ArrayList<HashMap<String, String>> newEditClassroomSchedules) {
+    public ResponseEntity<String> updateClassSchedules(@RequestBody ArrayList<HashMap<String, String>> newEditClassroomSchedules) {
         System.out.println(newEditClassroomSchedules.toString());
         Integer status = adminClazzService.updateClassSchedules(newEditClassroomSchedules);
         if (status == 0) {
-            return "success";
+            return ResponseEntity.status(HttpStatus.OK).body("success");
         } else {
-            return "error";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
         }
     }
 
     @DeleteMapping("/deleteClassByClassId/{classId}")
-    public String deleteClassByClassId(@PathVariable String classId) {
+    public ResponseEntity<String> deleteClassByClassId(@PathVariable String classId) {
         Integer status = adminClazzService.deleteClassByClassId(Integer.parseInt(classId));
         if (status == 0) {
-            return "success";
+            return ResponseEntity.status(HttpStatus.OK).body("success");
         } else {
-            return "error";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
         }
     }
 

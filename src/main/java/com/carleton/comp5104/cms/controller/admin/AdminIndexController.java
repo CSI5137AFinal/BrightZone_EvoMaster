@@ -4,6 +4,8 @@ import com.carleton.comp5104.cms.entity.AdminTodoList;
 import com.carleton.comp5104.cms.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,63 +19,68 @@ public class AdminIndexController {
     private AdminIndexService adminIndexService;
 
     @GetMapping("/getAccountsNum")
-    public Integer getAccountsNum() {
-        return adminIndexService.getAccountTableSize();
+    public ResponseEntity<Integer> getAccountsNum() {
+        Integer accountTableSize = adminIndexService.getAccountTableSize();
+        return ResponseEntity.status(HttpStatus.OK).body(accountTableSize);
     }
 
     @GetMapping("/getCoursesNum")
-    public Integer getCoursesNum() {
-        return adminIndexService.getCourseTableSize();
+    public ResponseEntity<Integer> getCoursesNum() {
+        Integer courseTableSize = adminIndexService.getCourseTableSize();
+        return ResponseEntity.status(HttpStatus.OK).body(courseTableSize);
     }
 
     @GetMapping("/getClazzNum")
-    public Integer getClazzNum() {
-        return adminIndexService.getClazzTableSize();
+    public ResponseEntity<Integer> getClazzNum() {
+        Integer clazzTableSize = adminIndexService.getClazzTableSize();
+        return ResponseEntity.status(HttpStatus.OK).body(clazzTableSize);
     }
 
     @GetMapping("/getClazzRoomNum")
-    public Integer getClazzRoomNum() {
-        return adminIndexService.getClazzRoomTableSize();
+    public ResponseEntity<Integer> getClazzRoomNum() {
+        Integer clazzRoomTableSize = adminIndexService.getClazzRoomTableSize();
+        return ResponseEntity.status(HttpStatus.OK).body(clazzRoomTableSize);
     }
 
     @GetMapping("/getTodoListById/{todoId}")
-    public AdminTodoList getTodoListById(@PathVariable int todoId) {
-        return adminIndexService.getTodoListById(todoId);
+    public ResponseEntity<AdminTodoList> getTodoListById(@PathVariable int todoId) {
+        AdminTodoList todoListById = adminIndexService.getTodoListById(todoId);
+        return ResponseEntity.status(HttpStatus.OK).body(todoListById);
     }
 
     @GetMapping("/getAdminToDoList/{adminId}")
-    public List<AdminTodoList> getAdminToDoList(@PathVariable int adminId) {
-        return adminIndexService.getAdminTodoList(adminId);
+    public ResponseEntity<List<AdminTodoList>> getAdminToDoList(@PathVariable int adminId) {
+        return ResponseEntity.status(HttpStatus.OK).body(adminIndexService.getAdminTodoList(adminId));
     }
 
     @PostMapping("/addAdminToDoList")
-    public String addAdminToDoList(@RequestBody AdminTodoList addForm) {
+    public ResponseEntity<String> addAdminToDoList(@RequestBody AdminTodoList addForm) {
         Integer status = adminIndexService.addAdminToDoList(addForm);
         if (status == 0) {
-            return "success";
+            return ResponseEntity.status(HttpStatus.OK).body("success");
         } else {
-            return "error";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
         }
     }
 
     @PostMapping("/modifyAdminToDoList")
-    public String modifyAdminToDoList(@RequestBody AdminTodoList addForm) {
+    public ResponseEntity<String> modifyAdminToDoList(@RequestBody AdminTodoList addForm) {
         Integer status = adminIndexService.modifyAdminTodoList(addForm);
         System.out.println(status);
         if (status == 0) {
-            return "success";
+            return ResponseEntity.status(HttpStatus.OK).body("success");
         } else {
-            return "error";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
         }
     }
 
     @GetMapping("/changeAdminTodoListStatus/{todoListId}")
-    public String changeAdminTodoListStatus(@PathVariable int todoListId) {
+    public ResponseEntity<String> changeAdminTodoListStatus(@PathVariable int todoListId) {
         Integer status = adminIndexService.changeToDoStatus(todoListId);
         if (status == 0) {
-            return "success";
+            return ResponseEntity.status(HttpStatus.OK).body("success");
         } else {
-            return "error";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
         }
     }
 }

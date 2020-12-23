@@ -60,7 +60,7 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     }
 
     @Override
-    public Page<Account> getAllAccountByType(String accountType, Integer pageNum, Integer pageSize) {
+    public Page<Account> getAllAccountByType(String accountType, Integer pageNum, Integer pageSize){
         accountType = accountType.trim();
         AccountType type = AccountType.valueOf(accountType);  // convert String to AccountType
         Pageable pageable = PageRequest.of(pageNum, pageSize);
