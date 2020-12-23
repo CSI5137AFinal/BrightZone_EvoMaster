@@ -12,13 +12,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AdminRequestServiceImpl implements AdminRequestService {
+public class RequestServiceImpl implements AdminRequestService {
 
     @Autowired
     private RequestRepository requestRepository;
 
     @Override
-    public boolean updateRequestStatus(int requestId, String newStatus) {
+    public boolean updateRequestStatus(int requestId, String newStatus) throws Exception{
         Optional<Request> optionalRequest = requestRepository.findById(requestId);
         if (optionalRequest.isPresent()) {
             Request request = optionalRequest.get();

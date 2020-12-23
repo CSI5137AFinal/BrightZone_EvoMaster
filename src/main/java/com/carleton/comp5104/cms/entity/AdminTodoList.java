@@ -23,5 +23,5 @@ public class AdminTodoList {
     private Date endTime;
     @Enumerated(EnumType.STRING)
     private AdminTodoLevel level;
-    private boolean status;
+    private Integer status;
 }

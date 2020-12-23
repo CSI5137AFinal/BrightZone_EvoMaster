@@ -35,7 +35,11 @@ public class AdminIndextepdefs {
     public void the_admin_press_button_to_write_a_new_todo(String code) {
         System.out.println("admin choose the " + code + " a new todo");
         adminTodoList = new AdminTodoList();
-        theNewAdmin = adminAccountService.getAccountById(300162168);
+        try {
+            theNewAdmin = adminAccountService.getAccountById(300162168);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         adminTodoList.setAdminId(theNewAdmin.getUserId());
     }
 
@@ -44,7 +48,11 @@ public class AdminIndextepdefs {
         System.out.println("admin choose the " + code + " the No." + todoNum + " todo");
         List<AdminTodoList> adminTodos = adminIndexService.getAdminTodoList(300162168);
         adminTodoList = adminTodos.get(todoNum);
-        theNewAdmin = adminAccountService.getAccountById(300162168);
+        try {
+            theNewAdmin = adminAccountService.getAccountById(300162168);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     @When("the admin input the new todo {string}")
@@ -80,7 +88,11 @@ public class AdminIndextepdefs {
         Assert.assertTrue(adminTodoList.size() > 0);
         System.out.println(Arrays.toString(adminTodoList.toArray()));
 
-        adminAccountService.deleteAccountById(theNewAdmin.getUserId());
+        try {
+            adminAccountService.deleteAccountById(theNewAdmin.getUserId());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     @Then("the admin press {string} button to save the edit")
@@ -95,14 +107,22 @@ public class AdminIndextepdefs {
         Assert.assertTrue(adminTodoList.size() > 0);
         System.out.println(Arrays.toString(adminTodoList.toArray()));
 
-        adminAccountService.deleteAccountById(theNewAdmin.getUserId());
+        try {
+            adminAccountService.deleteAccountById(theNewAdmin.getUserId());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
 
     @Given("the todo items has been add to table")
     public void the_todo_items_has_been_add_to_table() {
         adminTodoList = new AdminTodoList();
-        theNewAdmin = adminAccountService.getAccountById(300162168);
+        try {
+            theNewAdmin = adminAccountService.getAccountById(300162168);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         adminTodoList.setNotes("a test admin todo");
         adminTodoList.setAdminId(theNewAdmin.getUserId());
         adminTodoList.setLevel(AdminTodoLevel.Prior);
@@ -119,7 +139,12 @@ public class AdminIndextepdefs {
 
     @Then("the system change the state of the todo item")
     public void the_system_change_the_state_of_the_todo_item() {
-        int integer = adminIndexService.changeToDoStatus(adminTodoList.getId());
+        int integer = 0;
+        try {
+            integer = adminIndexService.changeToDoStatus(adminTodoList.getId());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         Assert.assertEquals(0, integer);
     }
 
@@ -129,7 +154,11 @@ public class AdminIndextepdefs {
         List<AdminTodoList> adminTodoList = adminIndexService.getAdminTodoList(theNewAdmin.getUserId());
         Assert.assertEquals(0, adminTodoList.size());
 
-        adminAccountService.deleteAccountById(theNewAdmin.getUserId());
+        try {
+            adminAccountService.deleteAccountById(theNewAdmin.getUserId());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     private Time formatString2Time(String inputTime) {

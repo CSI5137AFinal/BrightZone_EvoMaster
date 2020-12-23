@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.*;
 
 public interface AdminCourseService {
-    Page<Course> getAllCourse(Integer pageNum, Integer pageSize);
+    Page<Course> getAllCourse(Integer pageNum, Integer pageSize) throws Exception;
 
     Integer getCourseTableSize();
 

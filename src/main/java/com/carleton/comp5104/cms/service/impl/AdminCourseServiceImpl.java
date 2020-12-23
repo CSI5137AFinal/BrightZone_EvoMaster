@@ -33,7 +33,7 @@ public class AdminCourseServiceImpl implements AdminCourseService {
     private AdminClazzService adminClazzService;
 
     @Override
-    public Page<Course> getAllCourse(Integer pageNum, Integer pageSize) {
+    public Page<Course> getAllCourse(Integer pageNum, Integer pageSize) throws Exception{
         Pageable pageable = PageRequest.of(pageNum, pageSize);
         return courseRepository.findAll(pageable);
     }

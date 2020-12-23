@@ -12,7 +12,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/admin/index")
+@RequestMapping("/api/admin/index")
 public class AdminIndexController {
 
     @Autowired
@@ -20,8 +20,14 @@ public class AdminIndexController {
 
     @GetMapping("/getAccountsNum")
     public ResponseEntity<Integer> getAccountsNum() {
-        Integer accountTableSize = adminIndexService.getAccountTableSize();
-        return ResponseEntity.status(HttpStatus.OK).body(accountTableSize);
+        Integer accountTableSize = null;
+        try {
+            accountTableSize = adminIndexService.getAccountTableSize();
+            return ResponseEntity.status(HttpStatus.OK).body(accountTableSize);
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
     }
 
     @GetMapping("/getCoursesNum")
@@ -76,11 +82,17 @@ public class AdminIndexController {
 
     @GetMapping("/changeAdminTodoListStatus/{todoListId}")
     public ResponseEntity<String> changeAdminTodoListStatus(@PathVariable int todoListId) {
-        Integer status = adminIndexService.changeToDoStatus(todoListId);
-        if (status == 0) {
-            return ResponseEntity.status(HttpStatus.OK).body("success");
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
+        Integer status = null;
+        try {
+            status = adminIndexService.changeToDoStatus(todoListId);
+            if (status == 0) {
+                return ResponseEntity.status(HttpStatus.OK).body("success");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
+            }
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+
     }
 }

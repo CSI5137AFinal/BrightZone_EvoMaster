@@ -49,7 +49,12 @@ class AdminIndexServiceTest {
 
     @Test
     void testGetAccountTableSize() {
-        Integer accountTableSize = adminIndexService.getAccountTableSize();
+        Integer accountTableSize = null;
+        try {
+            accountTableSize = adminIndexService.getAccountTableSize();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         assertEquals(accountNum, accountTableSize);
     }
 
@@ -77,7 +82,7 @@ class AdminIndexServiceTest {
         AdminTodoList adminTodoList = new AdminTodoList();
         adminTodoList.setAdminId(adminAccountId);
         adminTodoList.setNotes("This is a teat To Do");
-        adminTodoList.setStatus(false);
+        adminTodoList.setStatus(0);
         adminTodoList.setLevel(AdminTodoLevel.Normal);
         adminTodoList.setStartTime(new Date());
         adminTodoList.setEndTime(new Date());
@@ -104,10 +109,15 @@ class AdminIndexServiceTest {
     void testChangeToDoStatus() {
         AdminTodoList adminTodoList = addANewToDoFirst();
         System.out.println(adminTodoList);
-        Integer status = adminIndexService.changeToDoStatus(adminTodoList.getId());
+        Integer status = null;
+        try {
+            status = adminIndexService.changeToDoStatus(adminTodoList.getId());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         assertEquals(0, status);
         AdminTodoList todoListById = adminIndexService.getTodoListById(adminTodoList.getId());
-        assertTrue(todoListById.isStatus());
+        assertEquals(1,todoListById.getStatus());
     }
 
     @Test
@@ -126,7 +136,7 @@ class AdminIndexServiceTest {
         AdminTodoList adminTodoList = new AdminTodoList();
         adminTodoList.setAdminId(adminAccountId);
         adminTodoList.setNotes("This is a teat To Do");
-        adminTodoList.setStatus(false);
+        adminTodoList.setStatus(0);
         adminTodoList.setLevel(AdminTodoLevel.Normal);
         adminTodoList.setStartTime(new Date());
         adminTodoList.setEndTime(new Date());

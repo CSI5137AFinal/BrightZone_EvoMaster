@@ -13,7 +13,7 @@ import java.util.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/admin/course")
+@RequestMapping("/api/admin/course")
 public class AdminCourseController {
 
     @Autowired
@@ -21,8 +21,14 @@ public class AdminCourseController {
 
     @GetMapping("/getAll/{pageNum}/{pageSize}")
     public ResponseEntity<Page<Course>> getAllCourse(@PathVariable("pageNum") Integer pageNum, @PathVariable("pageSize") Integer pageSize) {
-        Page<Course> allCourse = adminCourseService.getAllCourse(pageNum, pageSize);
-        return ResponseEntity.status(HttpStatus.OK).body(allCourse);
+        Page<Course> allCourse = null;
+        try {
+            allCourse = adminCourseService.getAllCourse(pageNum, pageSize);
+            return ResponseEntity.status(HttpStatus.OK).body(allCourse);
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
     }
 
     @GetMapping("/getCourseTableSize")
@@ -122,14 +128,19 @@ public class AdminCourseController {
 
     @PostMapping("/addPage/addPrerequisite")
     public ResponseEntity<String> addCoursePrerequisite(@RequestParam String prerequisiteCourseId, @RequestParam String courseId) {
-        ArrayList<Integer> prerequisiteList = new ArrayList<>();
-        prerequisiteList.add(Integer.parseInt(prerequisiteCourseId));
-        int status = adminCourseService.addCoursePrerequisite(prerequisiteList, Integer.parseInt(courseId));
-        if (status == 0) {
-            return ResponseEntity.status(HttpStatus.OK).body("success");
-        } else {
+        try {
+            ArrayList<Integer> prerequisiteList = new ArrayList<>();
+            prerequisiteList.add(Integer.parseInt(prerequisiteCourseId));
+            int status = adminCourseService.addCoursePrerequisite(prerequisiteList, Integer.parseInt(courseId));
+            if (status == 0) {
+                return ResponseEntity.status(HttpStatus.OK).body("success");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
+            }
+        } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
         }
+
     }
 
     @GetMapping("/CourseInfo/getCoursePrerequisite/{courseId}")
@@ -140,14 +151,19 @@ public class AdminCourseController {
 
     @DeleteMapping("/CourseInfo/deleteCoursePrerequisite/{courseId}/{prerequisiteId}")
     public ResponseEntity<String> deleteCoursePrerequisite(@PathVariable String courseId, @PathVariable String prerequisiteId) {
-        System.out.println(courseId);
-        System.out.println(prerequisiteId);
-        int status = adminCourseService.deleteCoursePrerequisite(Integer.parseInt(courseId), Integer.parseInt(prerequisiteId));
-        if (status == 0) {
-            return ResponseEntity.status(HttpStatus.OK).body("success");
-        } else {
+        try {
+            System.out.println(courseId);
+            System.out.println(prerequisiteId);
+            int status = adminCourseService.deleteCoursePrerequisite(Integer.parseInt(courseId), Integer.parseInt(prerequisiteId));
+            if (status == 0) {
+                return ResponseEntity.status(HttpStatus.OK).body("success");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
+            }
+        } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
         }
+
     }
 
     @PostMapping("/editPage/updateCoursePrerequisite")
@@ -168,28 +184,42 @@ public class AdminCourseController {
 
     @PostMapping("/addPage/addPreclusion")
     public ResponseEntity<String> addCoursePreclusion(@RequestParam String preclusionCourseId, @RequestParam String courseId) {
-        ArrayList<Integer> preclusionList = new ArrayList<>();
-        preclusionList.add(Integer.parseInt(preclusionCourseId));
-        int status = adminCourseService.addCoursePreclusion(preclusionList, Integer.parseInt(courseId));
-        if (status == 0) {
-            return ResponseEntity.status(HttpStatus.OK).body("success");
-        } else {
+        try {
+            ArrayList<Integer> preclusionList = new ArrayList<>();
+            preclusionList.add(Integer.parseInt(preclusionCourseId));
+            int status = adminCourseService.addCoursePreclusion(preclusionList, Integer.parseInt(courseId));
+            if (status == 0) {
+                return ResponseEntity.status(HttpStatus.OK).body("success");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
+            }
+        } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
         }
+
     }
 
     @GetMapping("/CourseInfo/getCoursePreclusion/{courseId}")
-    public ResponseEntity<List<Course>> getCoursePreclusion(@PathVariable Integer courseId) {
-        List<Course> coursePreclusion = adminCourseService.getCoursePreclusion(courseId);
-        return ResponseEntity.status(HttpStatus.OK).body(coursePreclusion);
+    public ResponseEntity<List<Course>> getCoursePreclusion(@PathVariable String courseId) {
+        try {
+            List<Course> coursePreclusion = adminCourseService.getCoursePreclusion(Integer.parseInt(courseId));
+            return ResponseEntity.status(HttpStatus.OK).body(coursePreclusion);
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
     }
 
     @DeleteMapping("/CourseInfo/deleteCoursePreclusion/{courseId}/{preclusionId}")
     public ResponseEntity<String> deleteCoursePreclusion(@PathVariable String courseId, @PathVariable String preclusionId) {
-        int status = adminCourseService.deleteCoursePreclusion(Integer.parseInt(courseId), Integer.parseInt(preclusionId));
-        if (status == 0) {
-            return ResponseEntity.status(HttpStatus.OK).body("success");
-        } else {
+        try {
+            int status = adminCourseService.deleteCoursePreclusion(Integer.parseInt(courseId), Integer.parseInt(preclusionId));
+            if (status == 0) {
+                return ResponseEntity.status(HttpStatus.OK).body("success");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
+            }
+        }catch (Exception exception){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
         }
     }

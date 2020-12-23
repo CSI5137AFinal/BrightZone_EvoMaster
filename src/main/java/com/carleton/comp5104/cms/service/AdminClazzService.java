@@ -18,9 +18,9 @@ public interface AdminClazzService {
 
     ArrayList<ClassroomSchedule> getClassSchedulesByClassId(int classId);
 
-    Account getProfessorById(int id);
+    Account getProfessorById(int id) throws Exception;
 
-    Account getProfessorByEmail(String email);
+    Account getProfessorByEmail(String email) throws Exception;
 
     ArrayList<Account> getProfessorList();
 
@@ -32,9 +32,9 @@ public interface AdminClazzService {
 
     Clazz updateClassInfo(Clazz newEditClazz);
 
-    Integer addNewClassSchedules(ArrayList<HashMap<String, String>> newClassroomSchedule);
+    Integer addNewClassSchedules(ArrayList<HashMap<String, String>> newClassroomSchedule) throws Exception;
 
-    Integer updateClassSchedules(ArrayList<HashMap<String, String>> newEditClassroomSchedule);
+    Integer updateClassSchedules(ArrayList<HashMap<String, String>> newEditClassroomSchedule) throws Exception;
 
     Integer deleteClassByClassId(int classId);
 

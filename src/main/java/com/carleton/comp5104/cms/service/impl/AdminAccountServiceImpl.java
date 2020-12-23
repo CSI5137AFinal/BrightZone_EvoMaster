@@ -54,13 +54,13 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     private AdminTodoListRepository adminTodoListRepository;
 
     @Override
-    public Page<Account> getAllAccount(Integer pageNum, Integer pageSize) {
+    public Page<Account> getAllAccount(Integer pageNum, Integer pageSize) throws Exception {
         Pageable pageable = PageRequest.of(pageNum, pageSize);
         return accountRepository.findAll(pageable);
     }
 
     @Override
-    public Page<Account> getAllAccountByType(String accountType, Integer pageNum, Integer pageSize){
+    public Page<Account> getAllAccountByType(String accountType, Integer pageNum, Integer pageSize) throws Exception {
         accountType = accountType.trim();
         AccountType type = AccountType.valueOf(accountType);  // convert String to AccountType
         Pageable pageable = PageRequest.of(pageNum, pageSize);
@@ -68,14 +68,14 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     }
 
     @Override
-    public Page<Account> getAllAccountByName(String name, Integer pageNum, Integer pageSize) {
+    public Page<Account> getAllAccountByName(String name, Integer pageNum, Integer pageSize) throws Exception {
         name = name.trim();
         Pageable pageable = PageRequest.of(pageNum, pageSize);
         return accountRepository.findAllByName(name, pageable);
     }
 
     @Override
-    public Page<Account> getAllAccountByTypeAndName(String accountType, String name, Integer pageNum, Integer pageSize) {
+    public Page<Account> getAllAccountByTypeAndName(String accountType, String name, Integer pageNum, Integer pageSize) throws Exception {
         accountType = accountType.trim();
         AccountType type = AccountType.valueOf(accountType);  // convert String to AccountType
         name = name.trim();
@@ -89,9 +89,9 @@ public class AdminAccountServiceImpl implements AdminAccountService {
     }
 
     @Override
-    public Account getAccountById(Integer id) {
+    public Account getAccountById(Integer id) throws Exception{
         Optional<Account> byId = accountRepository.findById(id);
-        return byId.orElse(null);
+        return byId.orElseGet(() -> byId.orElse(null));
     }
 
 
@@ -115,9 +115,9 @@ public class AdminAccountServiceImpl implements AdminAccountService {
 
     @Override
     @Transactional(rollbackFor = {RuntimeException.class})
-    public Integer deleteAccountById(Integer accountId) {
+    public Integer deleteAccountById(Integer accountId) throws Exception{
         int result = -1;
-        try {
+        //try {
             Optional<Account> accountOptional = accountRepository.findById(accountId);
             if (accountOptional.isPresent()) {
                 Account account = accountOptional.get();
@@ -153,9 +153,10 @@ public class AdminAccountServiceImpl implements AdminAccountService {
 
                 result = 0;
             }
-        } catch (Exception ex) {
-            result = -1;
-        }
+//        }
+//        catch (Exception ex) {
+//            result = -1;
+//        }
         return result;
     }
 

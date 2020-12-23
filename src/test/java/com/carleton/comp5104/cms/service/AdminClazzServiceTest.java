@@ -41,13 +41,23 @@ class AdminClazzServiceTest {
 
     @Test
     void testGetProfessorById() {
-        Account professorById = adminClazzService.getProfessorById(2000006);
+        Account professorById = null;
+        try {
+            professorById = adminClazzService.getProfessorById(2000006);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         assertEquals("Floyd Heasley", professorById.getName());
     }
 
     @Test
     void testGetProfessorByEmail() {
-        Account professorById = adminClazzService.getProfessorByEmail("floydheasley@uottawa.ca");
+        Account professorById = null;
+        try {
+            professorById = adminClazzService.getProfessorByEmail("floydheasley@uottawa.ca");
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         assertEquals("Floyd Heasley", professorById.getName());
     }
 
@@ -131,7 +141,12 @@ class AdminClazzServiceTest {
         classInfo.put("profId", String.valueOf(clazz.getProfId()));
         classInfo.put("classId", String.valueOf(clazz.getClassId()));
         newClassroomSchedules.add(classInfo);
-        Integer status = adminClazzService.addNewClassSchedules(newClassroomSchedules);
+        Integer status = null;
+        try {
+            status = adminClazzService.addNewClassSchedules(newClassroomSchedules);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         assertEquals(0, status);
         ArrayList<ClassroomSchedule> classSchedulesByClassId = adminClazzService.getClassSchedulesByClassId(clazz.getClassId());
         assertEquals(WeekDay.valueOf(newSchedule.get("weekday")), classSchedulesByClassId.get(0).getWeekday());
@@ -156,7 +171,11 @@ class AdminClazzServiceTest {
         updateSchedule.put("scheduleId", String.valueOf(classroomSchedule.getScheduleId()));
         updateClassroomSchedules.add(updateSchedule);
         updateClassroomSchedules.add(classInfo);
-        status = adminClazzService.updateClassSchedules(updateClassroomSchedules);
+        try {
+            status = adminClazzService.updateClassSchedules(updateClassroomSchedules);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         assertEquals(0, status);
 
         ArrayList<ClassroomSchedule> classSchedulesByClassId1 = adminClazzService.getClassSchedulesByClassId(clazz.getClassId());

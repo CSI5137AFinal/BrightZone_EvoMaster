@@ -27,7 +27,12 @@ public class AdminRequestServiceTest {
         int requestId = 1;
         String newStatus = "fulfilled";
         Assertions.assertTrue(requestRepository.findById(requestId).isEmpty());
-        boolean success = adminRequestService.updateRequestStatus(1, newStatus);
+        boolean success = false;
+        try {
+            success = adminRequestService.updateRequestStatus(1, newStatus);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         Assertions.assertFalse(success);
 
         // scenario 2: update request status success
@@ -39,7 +44,11 @@ public class AdminRequestServiceTest {
         Request save = requestRepository.save(request);
         requestId = save.getRequestId();
         newStatus = "fulfilled";
-        Assertions.assertTrue(adminRequestService.updateRequestStatus(requestId, newStatus));
+        try {
+            Assertions.assertTrue(adminRequestService.updateRequestStatus(requestId, newStatus));
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         // delete newly added request
         requestRepository.deleteAll();
     }

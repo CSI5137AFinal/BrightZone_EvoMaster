@@ -7,7 +7,7 @@ import java.util.List;
 
 
 public interface AdminIndexService {
-    Integer getAccountTableSize();
+    Integer getAccountTableSize() throws Exception;
 
     Integer getCourseTableSize();
 
@@ -21,7 +21,7 @@ public interface AdminIndexService {
 
     Integer addAdminToDoList(AdminTodoList addForm);
 
-    Integer changeToDoStatus(int todoListId);
+    Integer changeToDoStatus(int todoListId) throws Exception;
 
     Integer modifyAdminTodoList(AdminTodoList editForm);
 }

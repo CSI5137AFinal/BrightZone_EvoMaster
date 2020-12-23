@@ -34,7 +34,7 @@ public class AdminIndexServiceImpl implements AdminIndexService {
     private AdminTodoListRepository adminTodoListRepository;
 
     @Override
-    public Integer getAccountTableSize() {
+    public Integer getAccountTableSize() throws Exception {
         return accountRepository.findAll().size();
     }
 
@@ -61,7 +61,7 @@ public class AdminIndexServiceImpl implements AdminIndexService {
 
     @Override
     public List<AdminTodoList> getAdminTodoList(int adminId) {
-        return adminTodoListRepository.findAllByAdminIdAndStatusEquals(adminId, false);
+        return adminTodoListRepository.findAllByAdminIdAndStatusEquals(adminId, 0);
     }
 
 //    @Override
@@ -106,15 +106,15 @@ public class AdminIndexServiceImpl implements AdminIndexService {
     }
 
     @Override
-    public Integer changeToDoStatus(int todoListId) {
+    public Integer changeToDoStatus(int todoListId) throws Exception{
         int status = -1;
         Optional<AdminTodoList> byId = adminTodoListRepository.findById(todoListId);
         if (byId.isPresent()) {
             AdminTodoList adminTodoList = byId.get();
-            if (adminTodoList.isStatus()) {
-                adminTodoList.setStatus(false);
+            if (adminTodoList.getStatus() == 1) {
+                adminTodoList.setStatus(0);
             } else {
-                adminTodoList.setStatus(true);
+                adminTodoList.setStatus(1);
             }
             adminTodoListRepository.save(adminTodoList);
             status = 0;

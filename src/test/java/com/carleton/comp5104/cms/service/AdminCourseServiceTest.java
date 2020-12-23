@@ -244,7 +244,12 @@ class AdminCourseServiceTest {
     void testGetAllCourse() {
         int pageNum = 1;
         int pageSize = 10;
-        Page<Course> allCourse = adminCourseService.getAllCourse(pageNum, pageSize);
+        Page<Course> allCourse = null;
+        try {
+            allCourse = adminCourseService.getAllCourse(pageNum, pageSize);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         System.out.println(allCourse.getSize());
         assertEquals(pageSize, allCourse.getSize());
     }

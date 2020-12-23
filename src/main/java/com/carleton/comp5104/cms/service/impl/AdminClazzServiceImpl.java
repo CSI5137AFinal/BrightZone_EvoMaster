@@ -53,9 +53,8 @@ public class AdminClazzServiceImpl implements AdminClazzService {
         return classroomScheduleRepository.findAllByClassId(classId);
     }
 
-
     @Override
-    public Account getProfessorById(int id) {
+    public Account getProfessorById(int id) throws Exception{
         Optional<Account> byId = accountRepository.findById(id);
         if (byId.isPresent()) {
             AccountType type = byId.get().getType();
@@ -67,7 +66,7 @@ public class AdminClazzServiceImpl implements AdminClazzService {
     }
 
     @Override
-    public Account getProfessorByEmail(String email) {
+    public Account getProfessorByEmail(String email) throws Exception{
         Optional<Account> byEmail = accountRepository.findByEmail(email);
         if (byEmail.isPresent()) {
             Account account = byEmail.get();
@@ -168,7 +167,7 @@ public class AdminClazzServiceImpl implements AdminClazzService {
     }
 
     @Override
-    public Integer addNewClassSchedules(ArrayList<HashMap<String, String>> newClassroomSchedules) {
+    public Integer addNewClassSchedules(ArrayList<HashMap<String, String>> newClassroomSchedules) throws Exception {
         int status = -1;
         try {
             if (newClassroomSchedules.size() != 0) {
@@ -202,47 +201,43 @@ public class AdminClazzServiceImpl implements AdminClazzService {
     }
 
     @Override
-    public Integer updateClassSchedules(ArrayList<HashMap<String, String>> newEditClassroomSchedule) {
+    public Integer updateClassSchedules(ArrayList<HashMap<String, String>> newEditClassroomSchedule) throws Exception{
         int status = -1;
-        try {
-            if (newEditClassroomSchedule.size() != 0) {
-                HashMap<String, String> profAndClassId = newEditClassroomSchedule.get(newEditClassroomSchedule.size() - 1);
-                int professorId = Integer.parseInt(profAndClassId.get("profId"));
-                int classId = Integer.parseInt(profAndClassId.get("classId"));
-                newEditClassroomSchedule.remove(newEditClassroomSchedule.size() - 1);
+        if (newEditClassroomSchedule.size() != 0) {
+            HashMap<String, String> profAndClassId = newEditClassroomSchedule.get(newEditClassroomSchedule.size() - 1);
+            int professorId = Integer.parseInt(profAndClassId.get("profId"));
+            int classId = Integer.parseInt(profAndClassId.get("classId"));
+            newEditClassroomSchedule.remove(newEditClassroomSchedule.size() - 1);
 
-                for (HashMap<String, String> schedule : newEditClassroomSchedule) {
-                    int scheduleId = Integer.parseInt(schedule.get("scheduleId"));
-                    int roomId = Integer.parseInt(schedule.get("roomId"));
-                    int roomCapacityAsked = -1;
-                    if (schedule.get("roomCapacityAsked") != null) {
-                        roomCapacityAsked = Integer.parseInt(schedule.get("roomCapacityAsked"));
-                    }
+            for (HashMap<String, String> schedule : newEditClassroomSchedule) {
+                int scheduleId = Integer.parseInt(schedule.get("scheduleId"));
+                int roomId = Integer.parseInt(schedule.get("roomId"));
+                int roomCapacityAsked = -1;
+                if (schedule.get("roomCapacityAsked") != null) {
+                    roomCapacityAsked = Integer.parseInt(schedule.get("roomCapacityAsked"));
+                }
 //                    int roomCapacityAsked = Integer.parseInt(schedule.get("roomCapacityAsked"));
-                    WeekDay weekDay = WeekDay.valueOf(schedule.get("weekday"));
+                WeekDay weekDay = WeekDay.valueOf(schedule.get("weekday"));
 //
 //                    Time startTime = formatString2Time(schedule.get("startTime"));
 //                    Time endTime = formatString2Time(schedule.get("endTime"));
 
-                    Optional<ClassroomSchedule> byId = classroomScheduleRepository.findById(scheduleId);
-                    if (byId.isPresent()) {
-                        ClassroomSchedule classroomSchedule = byId.get();
-                        classroomSchedule.setRoomId(roomId);
-                        classroomSchedule.setProfessorId(professorId);
-                        classroomSchedule.setClassId(classId);
-                        if (roomCapacityAsked != -1) {
-                            classroomSchedule.setRoomCapacity(roomCapacityAsked);
-                        }
-                        classroomSchedule.setWeekday(weekDay);
-                        classroomSchedule.setStartTime(schedule.get("startTime"));
-                        classroomSchedule.setEndTime(schedule.get("endTime"));
-                        classroomScheduleRepository.save(classroomSchedule);
+                Optional<ClassroomSchedule> byId = classroomScheduleRepository.findById(scheduleId);
+                if (byId.isPresent()) {
+                    ClassroomSchedule classroomSchedule = byId.get();
+                    classroomSchedule.setRoomId(roomId);
+                    classroomSchedule.setProfessorId(professorId);
+                    classroomSchedule.setClassId(classId);
+                    if (roomCapacityAsked != -1) {
+                        classroomSchedule.setRoomCapacity(roomCapacityAsked);
                     }
+                    classroomSchedule.setWeekday(weekDay);
+                    classroomSchedule.setStartTime(schedule.get("startTime"));
+                    classroomSchedule.setEndTime(schedule.get("endTime"));
+                    classroomScheduleRepository.save(classroomSchedule);
                 }
-                status = 0;
             }
-        } catch (Exception exception) {
-            exception.printStackTrace();
+            status = 0;
         }
         return status;
     }

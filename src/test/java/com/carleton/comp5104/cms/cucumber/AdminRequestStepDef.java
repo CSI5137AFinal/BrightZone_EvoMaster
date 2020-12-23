@@ -46,7 +46,11 @@ public class AdminRequestStepDef {
 
     @When("the admin hit update request message button")
     public void the_admin_hit_update_request_message_button() {
-        this.success = adminRequestService.updateRequestStatus(this.requestId, this.newStatus);
+        try {
+            this.success = adminRequestService.updateRequestStatus(this.requestId, this.newStatus);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     @Then("Update request message fail")

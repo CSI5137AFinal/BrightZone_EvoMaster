@@ -2,14 +2,19 @@ package com.carleton.comp5104.cms.controller.account;
 
 import com.carleton.comp5104.cms.controller.BaseController;
 import com.carleton.comp5104.cms.entity.Account;
+import com.carleton.comp5104.cms.entity.Request;
 import com.carleton.comp5104.cms.service.AccountService;
+import com.carleton.comp5104.cms.service.AdminRequestService;
 import com.carleton.comp5104.cms.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -137,5 +142,41 @@ public class AccountController extends BaseController {
             result.put("errMsg", map.get("errMsg"));
         }
         return result;
+    }
+
+    @Autowired
+    private AdminRequestService adminRequestService;
+
+    @DeleteMapping("/deleteRequestByUserId")
+    public ResponseEntity<String> deleteRequestByUserId(@RequestParam("userId") Integer userId) {
+        boolean b = adminRequestService.deleteAllByUserId(userId);
+        if(b){
+            return ResponseEntity.status(HttpStatus.OK).body("success");
+        }else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
+        }
+    }
+
+    @PutMapping("/updateRequest")
+    public ResponseEntity<String> updateRequestStatus(@RequestParam("id") Integer requestId,
+                                                      @RequestParam("status") String newStatus) {
+        boolean b = false;
+        try {
+            b = adminRequestService.updateRequestStatus(requestId, newStatus);
+            if(b){
+                return ResponseEntity.status(HttpStatus.OK).body("success");
+            }else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
+            }
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
+        }
+
+    }
+
+    @GetMapping("/getAllOpenRequest")
+    public ResponseEntity<List<Request>> getAllOpenRequest() {
+        List<Request> allOpenRequest = adminRequestService.getAllOpenRequest();
+        return ResponseEntity.status(HttpStatus.OK).body(allOpenRequest);
     }
 }

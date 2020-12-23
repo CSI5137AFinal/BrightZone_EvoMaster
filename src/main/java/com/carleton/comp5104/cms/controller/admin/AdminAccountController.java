@@ -2,7 +2,9 @@ package com.carleton.comp5104.cms.controller.admin;
 
 import com.carleton.comp5104.cms.entity.Account;
 import com.carleton.comp5104.cms.entity.Faculty;
+import com.carleton.comp5104.cms.entity.Request;
 import com.carleton.comp5104.cms.service.AdminAccountService;
+import com.carleton.comp5104.cms.service.AdminRequestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -49,7 +51,12 @@ public class AdminAccountController {
     public ResponseEntity<Page<Account>> getAllAccountByName(@PathVariable("name") String name,
                                                              @PathVariable("pageNum") Integer pageNum,
                                                              @PathVariable("pageSize") Integer pageSize) {
-        return ResponseEntity.status(HttpStatus.OK).body(adminAccountService.getAllAccountByName(name, pageNum, pageSize));
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(adminAccountService.getAllAccountByName(name, pageNum, pageSize));
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @GetMapping("/getAllByTypeAndName/{type}/{name}/{pageNum}/{pageSize}")
@@ -57,7 +64,11 @@ public class AdminAccountController {
                                                                     @PathVariable("name") String name,
                                                                     @PathVariable("pageNum") Integer pageNum,
                                                                     @PathVariable("pageSize") Integer pageSize) {
-        return ResponseEntity.status(HttpStatus.OK).body(adminAccountService.getAllAccountByTypeAndName(type, name, pageNum, pageSize));
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(adminAccountService.getAllAccountByTypeAndName(type, name, pageNum, pageSize));
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @GetMapping("/getAllFaculties")
@@ -73,13 +84,18 @@ public class AdminAccountController {
 
     @GetMapping("/getAccount/{id}")
     public ResponseEntity<Account> getAccountById(@PathVariable("id") Integer id) {
-        Account accountById = adminAccountService.getAccountById(id);
-        if (accountById != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(accountById);
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        Account accountById = null;
+        try {
+            accountById = adminAccountService.getAccountById(id);
+            if (accountById != null) {
+                return ResponseEntity.status(HttpStatus.OK).body(accountById);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-
     }
 
     @PostMapping("/addNewAccount")
@@ -94,12 +110,19 @@ public class AdminAccountController {
 
     @DeleteMapping("/deleteAccount/{id}")
     public ResponseEntity<String> deleteAccountById(@PathVariable("id") Integer id) {
-        int status = adminAccountService.deleteAccountById(id);
-        if (status == 0) {
-            return ResponseEntity.status(HttpStatus.OK).body("success");
-        } else {
+        int status = 0;
+        try {
+            status = adminAccountService.deleteAccountById(id);
+            if (status == 0) {
+                return ResponseEntity.status(HttpStatus.OK).body("success");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
         }
+
     }
 
     @PutMapping("/updateAccount")

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface AdminTodoListRepository extends JpaRepository<AdminTodoList, Integer> {
-    List<AdminTodoList> findAllByAdminIdAndStatusEquals(int adminId, boolean isFinished);
+    List<AdminTodoList> findAllByAdminIdAndStatusEquals(int adminId, int isFinished);
 
     AdminTodoList findByAdminId(int adminId);
 

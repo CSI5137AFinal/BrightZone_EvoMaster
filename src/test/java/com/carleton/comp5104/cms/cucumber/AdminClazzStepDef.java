@@ -239,7 +239,12 @@ public class AdminClazzStepDef {
         classInfo.put("profId", String.valueOf(newClazz.getProfId()));
         classInfo.put("classId", String.valueOf(newClazz.getClassId()));
         newClassroomSchedules.add(classInfo);
-        int status = adminClazzService.addNewClassSchedules(newClassroomSchedules);
+        int status = 0;
+        try {
+            status = adminClazzService.addNewClassSchedules(newClassroomSchedules);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         Assert.assertEquals(0, status);
         ArrayList<ClassroomSchedule> classSchedulesByClassId = adminClazzService.getClassSchedulesByClassId(newClazz.getClassId());
         int roomId = availableClassrooms.get(0).getRoomId();

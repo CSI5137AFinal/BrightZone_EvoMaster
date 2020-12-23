@@ -44,7 +44,12 @@ public class AdminAccountServiceTest {
         String name = "Nila Devine";
         Integer pageNum = 0;
         Integer pageSize = 10;
-        Page<Account> accounts = adminAccountService.getAllAccountByTypeAndName(accountType, name, pageNum, pageSize);
+        Page<Account> accounts = null;
+        try {
+            accounts = adminAccountService.getAllAccountByTypeAndName(accountType, name, pageNum, pageSize);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         for (Account account : accounts) {
             System.out.println(account);
         }
@@ -82,7 +87,12 @@ public class AdminAccountServiceTest {
         String name = "Nila Devine";
         Integer pageNum = 0;
         Integer pageSize = 10;
-        Page<Account> accounts = adminAccountService.getAllAccountByName(name, pageNum, pageSize);
+        Page<Account> accounts = null;
+        try {
+            accounts = adminAccountService.getAllAccountByName(name, pageNum, pageSize);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         assertEquals(name, accounts.getContent().get(0).getName());
     }
 
@@ -92,7 +102,12 @@ public class AdminAccountServiceTest {
         String name = "Nila Devine";
         Integer pageNum = 0;
         Integer pageSize = 10;
-        Page<Account> accounts = adminAccountService.getAllAccountByTypeAndName(accountType, name, pageNum, pageSize);
+        Page<Account> accounts = null;
+        try {
+            accounts = adminAccountService.getAllAccountByTypeAndName(accountType, name, pageNum, pageSize);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         assertEquals(name, accounts.getContent().get(0).getName());
         assertEquals(AccountType.administrator, accounts.getContent().get(0).getType());
     }
@@ -107,7 +122,12 @@ public class AdminAccountServiceTest {
     void testGetAccountById() {
         String name = "Nila Devine";
         int accountId = 1000000;
-        Account accountById = adminAccountService.getAccountById(accountId);
+        Account accountById = null;
+        try {
+            accountById = adminAccountService.getAccountById(accountId);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         assertEquals(name, accountById.getName());
     }
 
@@ -135,32 +155,64 @@ public class AdminAccountServiceTest {
         account.setVerificationCode("");
         Integer status = adminAccountService.addNewAccount(account);
         assertEquals(0, status);
-        Account accountById = adminAccountService.getAccountById(account.getUserId());
+        Account accountById = null;
+        try {
+            accountById = adminAccountService.getAccountById(account.getUserId());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         Assert.assertSame(account.getUserId(), accountById.getUserId());
 
         //test update the new added account.
         // 1.change the new and status.
         // 2. change the state back to current to test the email system.
-        accountById = adminAccountService.getAccountById(account.getUserId());
+        try {
+            accountById = adminAccountService.getAccountById(account.getUserId());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         String newName = "Jack Ryan";
         accountById.setName(newName);
         accountById.setAccountStatus(AccountStatus.unauthorized);
         status = adminAccountService.updateAccount(accountById);
         assertEquals(0, status);
-        Account accountByIdNameUpdated = adminAccountService.getAccountById(accountById.getUserId());
+        Account accountByIdNameUpdated = null;
+        try {
+            accountByIdNameUpdated = adminAccountService.getAccountById(accountById.getUserId());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         assertEquals(newName, accountByIdNameUpdated.getName());
         accountByIdNameUpdated.setAccountStatus(AccountStatus.current);
         status = adminAccountService.updateAccount(accountByIdNameUpdated);
         assertEquals(0, status);
-        Account accountByIdStatusUpdated = adminAccountService.getAccountById(accountById.getUserId());
+        Account accountByIdStatusUpdated = null;
+        try {
+            accountByIdStatusUpdated = adminAccountService.getAccountById(accountById.getUserId());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         assertEquals(AccountStatus.current, accountByIdStatusUpdated.getAccountStatus());
 
 
         //test delete the new added account
-        accountById = adminAccountService.getAccountById(account.getUserId());
-        status = adminAccountService.deleteAccountById(accountById.getUserId());
+        try {
+            accountById = adminAccountService.getAccountById(account.getUserId());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        try {
+            status = adminAccountService.deleteAccountById(accountById.getUserId());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         assertEquals(0, status);
-        Account accountByIdEqualsNone = adminAccountService.getAccountById(accountById.getUserId());
+        Account accountByIdEqualsNone = null;
+        try {
+            accountByIdEqualsNone = adminAccountService.getAccountById(accountById.getUserId());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         Assert.assertNull(accountByIdEqualsNone);
         personRepository.deleteById(person.getPersonId());
     }

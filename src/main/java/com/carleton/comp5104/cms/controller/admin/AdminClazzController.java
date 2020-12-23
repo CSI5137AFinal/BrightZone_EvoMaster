@@ -26,43 +26,68 @@ public class AdminClazzController {
 
     @GetMapping("/getClassInfoByCourseId/{courseId}")
     public ResponseEntity<ArrayList<Clazz>> getClassInfoByCourseId(@PathVariable String courseId) {
-        ArrayList<Clazz> classInfoByCourseId = adminClazzService.getClassInfoByCourseId(Integer.parseInt(courseId));
-        if (!classInfoByCourseId.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.OK).body(classInfoByCourseId);
-        } else {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(classInfoByCourseId);
+        try {
+            ArrayList<Clazz> classInfoByCourseId = adminClazzService.getClassInfoByCourseId(Integer.parseInt(courseId));
+            if (!classInfoByCourseId.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.OK).body(classInfoByCourseId);
+            } else {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(classInfoByCourseId);
+            }
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
     @GetMapping("/getClassSchedulesByClassId/{classId}")
     public ResponseEntity<ArrayList<ClassroomSchedule>> getClassSchedulesByClassId(@PathVariable String classId) {
-        ArrayList<ClassroomSchedule> classSchedulesByClassId = adminClazzService.getClassSchedulesByClassId(Integer.parseInt(classId));
-        if (!classSchedulesByClassId.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.OK).body(classSchedulesByClassId);
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        try {
+            int ByClassId = Integer.parseInt(classId);
+            ArrayList<ClassroomSchedule> classSchedulesByClassId = adminClazzService.getClassSchedulesByClassId(ByClassId);
+            if (!classSchedulesByClassId.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.OK).body(classSchedulesByClassId);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
+        } catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+
 
     }
 
 
     @GetMapping("/getProfessorById/{userId}")
     public ResponseEntity<Account> getProfessorById(@PathVariable int userId) {
-        Account professorById = adminClazzService.getProfessorById(userId);
-        if (professorById != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(professorById);
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        Account professorById = null;
+        try {
+            professorById = adminClazzService.getProfessorById(userId);
+            if (professorById != null) {
+                return ResponseEntity.status(HttpStatus.OK).body(professorById);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+
     }
 
     @GetMapping("/getProfessorByEmail/{email}")
     public ResponseEntity<Account> getProfessorByEmail(@PathVariable String email) {
-        Account professorByEmail = adminClazzService.getProfessorByEmail(email);
-        if (professorByEmail != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(professorByEmail);
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        if (!email.contains("@")) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        try {
+            Account professorByEmail = adminClazzService.getProfessorByEmail(email);
+            if (professorByEmail != null) {
+                return ResponseEntity.status(HttpStatus.OK).body(professorByEmail);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
 
@@ -118,33 +143,51 @@ public class AdminClazzController {
     @PostMapping("/addNewClassSchedules")
     public ResponseEntity<String> addNewClassSchedules(@RequestBody ArrayList<HashMap<String, String>> newClassroomSchedules) {
         System.out.println(newClassroomSchedules.toString());
-        Integer status = adminClazzService.addNewClassSchedules(newClassroomSchedules);
-        if (status == 0) {
-            return ResponseEntity.status(HttpStatus.OK).body("success");
-        } else {
+        Integer status = null;
+        try {
+            status = adminClazzService.addNewClassSchedules(newClassroomSchedules);
+            if (status == 0) {
+                return ResponseEntity.status(HttpStatus.OK).body("success");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
+            }
+        } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
         }
     }
 
     @PostMapping("/updateClassSchedules")
     public ResponseEntity<String> updateClassSchedules(@RequestBody ArrayList<HashMap<String, String>> newEditClassroomSchedules) {
-        System.out.println(newEditClassroomSchedules.toString());
-        Integer status = adminClazzService.updateClassSchedules(newEditClassroomSchedules);
-        if (status == 0) {
-            return ResponseEntity.status(HttpStatus.OK).body("success");
-        } else {
+        //System.out.println(newEditClassroomSchedules.toString());
+        Integer status = null;
+        try {
+            status = adminClazzService.updateClassSchedules(newEditClassroomSchedules);
+            if (status == 0) {
+                return ResponseEntity.status(HttpStatus.OK).body("success");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
         }
+
     }
 
     @DeleteMapping("/deleteClassByClassId/{classId}")
     public ResponseEntity<String> deleteClassByClassId(@PathVariable String classId) {
-        Integer status = adminClazzService.deleteClassByClassId(Integer.parseInt(classId));
-        if (status == 0) {
-            return ResponseEntity.status(HttpStatus.OK).body("success");
-        } else {
+        try {
+            int DeleteClassId = Integer.parseInt(classId);
+            Integer status = adminClazzService.deleteClassByClassId(DeleteClassId);
+            if (status == 0) {
+                return ResponseEntity.status(HttpStatus.OK).body("success");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
+            }
+        } catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("error");
         }
+
     }
 
 }

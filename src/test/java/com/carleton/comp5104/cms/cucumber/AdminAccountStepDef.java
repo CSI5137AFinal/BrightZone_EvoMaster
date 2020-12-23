@@ -51,7 +51,11 @@ public class AdminAccountStepDef {
         Account account = ANewAccount("student");
         Integer status = adminAccountService.addNewAccount(account);
         assertEquals(0, status);
-        Assert.assertNotNull(adminAccountService.getAccountById(accountId));
+        try {
+            Assert.assertNotNull(adminAccountService.getAccountById(accountId));
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     @Given("the new professor test user was added to account table")
@@ -62,7 +66,11 @@ public class AdminAccountStepDef {
         Account account = ANewAccount("professor");
         Integer status = adminAccountService.addNewAccount(account);
         assertEquals(0, status);
-        Assert.assertNotNull(adminAccountService.getAccountById(accountId));
+        try {
+            Assert.assertNotNull(adminAccountService.getAccountById(accountId));
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     @Given("the new admin test user was added to account table")
@@ -73,12 +81,20 @@ public class AdminAccountStepDef {
         Account account = ANewAccount("administrator");
         Integer status = adminAccountService.addNewAccount(account);
         assertEquals(0, status);
-        Assert.assertNotNull(adminAccountService.getAccountById(accountId));
+        try {
+            Assert.assertNotNull(adminAccountService.getAccountById(accountId));
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     @When("the admin search the account with the {string}")
     public void theAdminSearchTheAccountWithThe(String userName) {
-        allAccountByName = adminAccountService.getAllAccountByName(userName, 0, 10);
+        try {
+            allAccountByName = adminAccountService.getAllAccountByName(userName, 0, 10);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     @And("the system output no such user")
@@ -103,9 +119,19 @@ public class AdminAccountStepDef {
 
     @Then("the system delete the account")
     public void theSystemDeleteTheAccount() {
-        int status = adminAccountService.deleteAccountById(accountId);
+        int status = 0;
+        try {
+            status = adminAccountService.deleteAccountById(accountId);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         Assert.assertEquals(0, status);
-        Account accountById = adminAccountService.getAccountById(accountId);
+        Account accountById = null;
+        try {
+            accountById = adminAccountService.getAccountById(accountId);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         Assert.assertNull(accountById);
         personRepository.deleteById(accountId);
     }
@@ -161,13 +187,27 @@ public class AdminAccountStepDef {
 
     @Then("the system shows the updated account info")
     public void the_system_shows_the_updated_account_info() {
-        Account accountById = adminAccountService.getAccountById(testAccount.getUserId());
+        Account accountById = null;
+        try {
+            accountById = adminAccountService.getAccountById(testAccount.getUserId());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         Assert.assertEquals(testAccount.getName(), accountById.getName());
         Assert.assertEquals(testAccount.getType(), accountById.getType());
         System.out.println(accountById.toString());
-        int status = adminAccountService.deleteAccountById(accountId);
+        int status = 0;
+        try {
+            status = adminAccountService.deleteAccountById(accountId);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         Assert.assertEquals(0, status);
-        accountById = adminAccountService.getAccountById(accountId);
+        try {
+            accountById = adminAccountService.getAccountById(accountId);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         Assert.assertNull(accountById);
     }
 

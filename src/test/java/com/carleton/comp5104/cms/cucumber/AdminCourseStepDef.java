@@ -116,7 +116,11 @@ public class AdminCourseStepDef {
     @Given("A test course has been added to the course table")
     public void a_test_course_has_been_added_to_the_course_table() {
         //construct a valid course first.
-        adminCourseService.getAllCourse(0, 10);
+        try {
+            adminCourseService.getAllCourse(0, 10);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
         Course lastCourse = adminCourseService.getLastCourse();
         int newCourseNumber = Integer.parseInt(lastCourse.getCourseNumber()) + 1;
         newCourse = new Course();
